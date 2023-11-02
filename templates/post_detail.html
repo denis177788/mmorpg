@@ -1,0 +1,25 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.text|safe }}</p>
+<p>Автор: {{ post.user.username }}</p>
+<p>Категория: {{ post.category }}</p>
+<p>ID объявления: {{ post.pk }}</p>
+<p>{{ post.datetime|date:'d M Y' }}</p>
+{% if request.user.username %}
+    {% if request.user.username == post.user.username %}
+        <p><a href="{% url 'post_edit' post.pk %}">Редактироать</a></p>
+        <p><a href="{% url 'post_delete' post.pk %}">Удалить</a></p>
+    {% else %}
+        <p><a href="{% url 'send_message' post.pk %}">Оставить отклик</a></p>
+    {% endif %}
+{% else %}
+        <p>Чтобы оставить отклик, необъодимо <a href="/sign/login/">войти</a>.</p>
+{% endif %}
+{% endblock content %}
+

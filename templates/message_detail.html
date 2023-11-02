@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Message
+{% endblock title %}
+
+{% block content %}
+<h1>Тема: {{ message.post }}</h1>
+<h4>{{ message.text }}</h4>
+<p>Отправитель: {{ message.sender.username }}</p>
+<p>Получатель: {{ message.recipient.username }}</p>
+<p>Прочитано: {{ message.isread }}</p>
+<p>ID сообщения: {{ message.pk }}</p>
+<p>{{ message.datetime|date:'d M Y' }}</p>
+{% if request.user.username %}
+    {% if message.recipient.username == request.user.username %}
+        <p><a href="{% url 'message_accept' message.pk %}">Принять отклик</a></p>
+        <p><a href="{% url 'message_delete' message.pk %}">Удалить</a></p>
+    {% endif %}
+{% endif %}
+{% endblock content %}
+
